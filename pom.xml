@@ -7,7 +7,7 @@
     <groupId>org.rascalmpl</groupId>
     <artifactId>typepal-update-site</artifactId>
     <packaging>pom</packaging>
-    <version>0.4.7-SNAPSHOT</version> <!-- corresponds to the version of typepal -->
+    <version>0.4.7</version> <!-- corresponds to the version of typepal -->
 
     <build>
         <plugins>
