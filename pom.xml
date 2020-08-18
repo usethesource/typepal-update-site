@@ -7,7 +7,7 @@
     <groupId>org.rascalmpl</groupId>
     <artifactId>typepal-update-site</artifactId>
     <packaging>pom</packaging>
-    <version>0.4.7</version>
+    <version>0.4.7-SNAPSHOT</version> <!-- corresponds to the version of typepal -->
 
     <build>
         <plugins>
@@ -18,12 +18,11 @@
                 <executions>
                     <execution>
                         <id>generate-p2-site</id>
-                        <phase>compile</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>site</goal>
                         </goals>
                         <configuration>
-                            <additionalArgs>-consoleLog -debug -verbose</additionalArgs>
                             <categoryFileURL>category.xml</categoryFileURL>
                             <featureDefinitions>
                                 <feature>
@@ -44,13 +43,13 @@ Redistribution and use in source and binary forms, with or without modification,
 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-</license>
+                                    </license>
                                     <artifacts>
                                         <artifact>
-                                            <id>org.rascalmpl:typepal:0.4.7</id>
-                                            <transitive>false</transitive>
+                                            <id>org.rascalmpl:typepal:${project.version}</id>
+                                            <transitive>false</transitive> <!-- don't include rascal -->
                                             <singleton>true</singleton>
-                                            <override>true</override>
+                                            <override>true</override> 
                                         </artifact>
                                     </artifacts>
                                 </feature>
@@ -59,13 +58,64 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-p2-repository-plugin</artifactId>
+                <version>1.4.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>archive-repository</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- tell maven about the artifact build -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>target/${project.artifactId}-${project.version}.zip</file>
+                                    <type>zip</type>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
     </build>
+
+    <!-- deployment configuration (usethesource) -->
+    <distributionManagement>
+        <repository>
+            <id>usethesource-releases</id>
+            <url>https://nexus.usethesource.io/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>usethesource-snapshots</id>
+            <url>https://nexus.usethesource.io/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <repositories>
         <repository>
             <id>usethesource-releases</id>
             <url>https://nexus.usethesource.io/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>usethesource-snapshots</id>
+            <url>https://nexus.usethesource.io/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 </project>
