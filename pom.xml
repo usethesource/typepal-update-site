@@ -50,6 +50,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&
                                             <transitive>false</transitive> <!-- don't include rascal -->
                                             <singleton>true</singleton>
                                             <override>true</override> 
+                                            <instructions>
+                                                <Bundle-Name>typepal</Bundle-Name>
+                                                <Bundle-SymbolicName>typepal</Bundle-SymbolicName>
+                                            </instructions>
                                         </artifact>
                                     </artifacts>
                                 </feature>
